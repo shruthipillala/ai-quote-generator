@@ -40,7 +40,14 @@ public class QuoteController {
 			model.addAttribute("error", " Please enter a topic to generate a quote.");
 			return "index";
 		}
-		String ip = request.getRemoteAddr();
+//		String ip = request.getRemoteAddr();
+		String ip = request.getHeader("X-Forwarded-For");
+		if (ip == null) {
+		    ip = request.getRemoteAddr(); // fallback
+		} else if (ip.contains(",")) {
+		    ip = ip.split(",")[0]; // get first IP if multiple in chain
+		}
+		ip = ip.trim();
 
 		// If user already used their free quote
 		if (userUsedFreeQuote.getOrDefault(ip, false)) {
