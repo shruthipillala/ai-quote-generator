@@ -1,0 +1,39 @@
+
+<!-- src/main/resources/templates/index.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Quote Generator</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+
+<body>
+    <h1>AI Quote Generator</h1>
+    <div class="background"></div>
+
+    <div class="container">
+		<!-- Show error message -->
+		<div th:if="${error}" style="color: maroon; margin-bottom: 10px;">
+		    <p th:text="${error}"></p>
+		</div>
+
+        <form action="/generate" method="post">
+            <label>Topic:</label>
+            <input type="text" name="topic" placeholder="Enter a topic" />
+            <button type="submit">Generate Quote</button>
+        </form>
+
+        <div th:if="${quote}">
+            <!-- Only show "Quote on..." if it's a real quote -->
+            <h2 th:if="${not #strings.contains(quote, 'free quote limit')}">
+                Quote on "<span th:text="${topic}"></span>":
+            </h2>
+
+            <!-- Show the actual quote/message, preserve line breaks -->
+            <p th:text="${quote}" style="white-space: pre-wrap;"></p>
+        </div>
+    </div>
+</body>
+
+</html>
