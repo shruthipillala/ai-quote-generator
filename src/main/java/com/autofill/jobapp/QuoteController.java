@@ -34,23 +34,21 @@ public class QuoteController {
 	}
 
 	@PostMapping("/generate")
-	public String generateQuote(@RequestParam String topic,
-	                            HttpServletRequest request,
-	                            Model model) {
-		
-		   if (topic == null || topic.trim().isEmpty()) {
-		        model.addAttribute("error", " Please enter a topic to generate a quote.");
-		        return "index";
-		    }
+	public String generateQuote(@RequestParam String topic, HttpServletRequest request, Model model) {
+
+		if (topic == null || topic.trim().isEmpty()) {
+			model.addAttribute("error", " Please enter a topic to generate a quote.");
+			return "index";
+		}
 		String ip = request.getRemoteAddr();
 
 		// If user already used their free quote
 		if (userUsedFreeQuote.getOrDefault(ip, false)) {
 			String message = """
-			     You’ve reached your free quote limit.
-			     To generate unlimited quotes, clone this project from GitHub and run it locally using your own OpenAI API key.
-			    
-			""";
+					     You’ve reached your free quote limit.
+					     To generate unlimited quotes, clone this project from GitHub and run it locally using your own OpenAI API key.
+
+					""";
 			model.addAttribute("quote", message);
 			return "index";
 		}
@@ -68,6 +66,4 @@ public class QuoteController {
 		return "index";
 	}
 
-	
 }
-
