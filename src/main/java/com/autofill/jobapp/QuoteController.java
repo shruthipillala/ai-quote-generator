@@ -68,10 +68,6 @@ public class QuoteController {
 		return "index";
 	}
 
-	@GetMapping("/test")
-	@ResponseBody
-	public String testAI() {
-		return chatClient.prompt("Say something funny").call().content();
-	}
+	
 }
 
