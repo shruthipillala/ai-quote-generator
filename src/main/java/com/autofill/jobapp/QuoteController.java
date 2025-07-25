@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,7 +36,7 @@ public class QuoteController {
 	}
 
 	@PostMapping("/generate")
-	public String generateQuote(@RequestParam String topic, HttpServletRequest request, Model model) {
+	public String generateQuote(@RequestParam String topic, HttpServletRequest request,  HttpServletResponse response,Model model) {
 
 		if (topic == null || topic.trim().isEmpty()) {
 			model.addAttribute("error", " Please enter a topic to generate a quote.");
@@ -90,6 +92,10 @@ public class QuoteController {
 			model.addAttribute("topic", topic);
 
 			userUsedFreeQuote.put(ip, true);// mark as used
+			Cookie cookie = new Cookie("usedFreeQuote", "true");
+			cookie.setPath("/");
+			response.addCookie(cookie);
+
 		} catch (Exception e) {
 			System.out.println("OpenAI API failed: " + e.getMessage());
 			model.addAttribute("quote", " Sorry! Unable to generate quote right now. Try again later.");
